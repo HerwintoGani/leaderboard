@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "82097e34-7609-43c2-924e-e49d5b5eaed0",
+		"name": "Leaderboard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initial Insert Bulk",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost/leaderboard/public/api/scoreInsertBulk",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"leaderboard",
+						"public",
+						"api",
+						"scoreInsertBulk"
+					]
+				},
+				"description": "Run Only Once!! initial setup to generate data to t_history_submit_score | \nOptional, can be run again please refer to the code on how to run again"
+			},
+			"response": []
+		},
+		{
+			"name": "Insert Score",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "5",
+							"description": "Required | Integer | based on id from users table",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "9",
+							"description": "Required | Integer | 0 - 9",
+							"type": "text"
+						},
+						{
+							"key": "score",
+							"value": "900",
+							"description": "Required | Big Integer | maximum 20 byte",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/leaderboard/public/api/scoreInsert",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"leaderboard",
+						"public",
+						"api",
+						"scoreInsert"
+					]
+				},
+				"description": "Inserting data to t_history_submit_score, all data is mandatory"
+			},
+			"response": []
+		},
+		{
+			"name": "showLeaderboard",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Required (if username is null) | Pagination for the data, start from 1",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "Montana Marvin DVM",
+							"description": "Optional | Filter for showing which username | Rules -> {input} = {data}",
+							"type": "text"
+						},
+						{
+							"key": "take",
+							"value": "20",
+							"description": "Required (if username is null) | Determine how many data to retrieve",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/leaderboard/public/api/showLeaderboard",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"leaderboard",
+						"public",
+						"api",
+						"showLeaderboard"
+					]
+				},
+				"description": "Show all leaderboard data based on page and take"
+			},
+			"response": []
+		},
+		{
+			"name": "Show User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "5",
+							"description": "Optional | Integer | Based on id from users table",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/leaderboard/public/api/showUser",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"leaderboard",
+						"public",
+						"api",
+						"showUser"
+					]
+				},
+				"description": "Get all user from database |\nOptional -> Input user ID to only show 1 user information"
+			},
+			"response": []
+		},
+		{
+			"name": "Task 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost/leaderboard/public/api/callApi",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"leaderboard",
+						"public",
+						"api",
+						"callApi"
+					]
+				},
+				"description": "Getting the data from the URL with rules\n\nRequest body:\ntimestamp integer 13 digit epoch timestamp -> generated from application\n\nRequest header:\nX-Nonce: randomly generated string different on each request -> generated from application\nX-API-Signature: SHA256 encoded string\n\nX-API-Signature formula:\nSHA256 encoded from combined string: nonce + request timestamp + secret key\n\nSecret key: ABC123xyz"
+			},
+			"response": []
+		}
+	]
+}

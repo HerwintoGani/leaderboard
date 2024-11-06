@@ -18,7 +18,7 @@ Application/API is tested with PHP XAMPP and MYSQL from XAMPP website https://ww
     - Run postman "Initial Insert Bulk" API
 - Database IMPORT
     - Import the leaderboard.sql to the database
-6. You are done, feel free to try the API based on documentation below
+6. Import the Postman collections or refer to API below to use the application
 
 
         
