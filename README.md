@@ -1,64 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Leaderboard API
 
-## About Laravel
+Installation steps
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Application/API is tested with PHP XAMPP and MYSQL from XAMPP website https://www.apachefriends.org/download.html
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Ensure you are using PHP 8.1 version
+2. Setup the database as needed
+3. Clone the repository
+4. Run composer install
+- Optional, Adjust the .env as needed
+5. Setup Database
+- Using MIGRATIONS
+    - Ensure database has been created 
+    - Run php artisan migrate
+    - Run php artisan db:seed
+    - Run postman "Initial Insert Bulk" API
+- Database IMPORT
+    - Import the leaderboard.sql to the database
+6. You are done, feel free to try the API based on documentation below
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+        
+## API Reference
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Inesrt Initial Bulk
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Run Only Once!! initial setup to generate data to t_history_submit_score
 
-## Laravel Sponsors
+**Optional**, can be run again please refer to the code inside ScoreController::scoreInsertBulk on how to run again
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+```http
+  POST /api/scoreInsertBulk
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `none` |  |  |
 
-## Contributing
+#### Insert Score
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Inserting data to t_history_submit_score, all data is Required
 
-## Code of Conduct
+```http
+  POST /api/scoreInsert
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Parameter | Type     | Description                       | Example                       |
+| :-------- | :------- | :-------------------------------- | :-------------------------------- |
+| `user_id`      | `Integer` | **Required**. Based on id from users table | 3 |
+| `level`      | `Integer` | **Required**. 1 Digits (0 - 9)| 5 |
+| `score`      | `Integer` | **Required**. Up to 20 Digits | 9000000 |
 
-## Security Vulnerabilities
+#### Show leaderboard
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Show all leaderboard data based on page and take
 
-## License
+```http
+  POST /api/showLeaderboard
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Parameter | Type     | Description                       | Example                       |
+| :-------- | :------- | :-------------------------------- | :-------------------------------- |
+| `page`      | `Integer` | **Required if username is null**. Pagination for the data, start from 1 | 1 |
+| `take`      | `Integer` | **Required if username is null**. Determine how many data to retrieve | 20 |
+| `username`      | `String` | **Optional**. Filter for showing which username with rules (input) = (data) | Montana Marvin DVM |
+
+#### Show User
+
+Get all user from database
+**Optional**. Input user ID to only show 1 user information
+
+```http
+  POST /api/showUser
+```
+
+| Parameter | Type     | Description                       | Example                       |
+| :-------- | :------- | :-------------------------------- | :-------------------------------- |
+| `username`      | `Integer ` |  **Optional**. Based on id from users table | 3 |
+
+
+#### Task 2
+
+Getting the data from the URL with rules
+
+Request body: timestamp integer 13 digit epoch timestamp -> generated from application
+
+Request header: X-Nonce: randomly generated string different on each request -> generated from application X-API-Signature: SHA256 encoded string
+
+X-API-Signature formula: SHA256 encoded from combined string: nonce + request timestamp + secret key
+
+Secret key: ABC123xyz
+
+```http
+  POST /api/callApi
+```
+
+| Parameter | Type     | Description                       | Example                       |
+| :-------- | :------- | :-------------------------------- | :-------------------------------- |
+| `timestamp`      | `timestamp` | Epoch 13 Will be auto generated by application |  |
